@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+filename = ARGV[0]
+raise "You need to pass in a filename to run!" if filename.nil?
+
+folder = ARGV[0].split("/").first
+file = ARGV[0].split("/").last
+
+data_file = "data.txt"
+if (ARGV[1] == "--test") 
+    system("ruby #{folder}/#{file.sub(".rb", ".test.rb")}")
+    exit
+end
+
+if !ARGV[1].nil? 
+    data_file = ARGV[1].sub("--", "") + ".txt"
+end
+
+executable = ""
+if ARGV[2] == "--profile"
+    # Hard coded! Eww!
+    executable = "ruby /opt/homebrew/lib/ruby/gems/3.2.0/gems/ruby-prof-1.6.3/bin/ruby-prof"
+end
+
+print "Data: #{folder}/#{data_file}\n\n"
+
+system("cat #{folder}/#{data_file} | #{executable} #{filename}")
+
+
