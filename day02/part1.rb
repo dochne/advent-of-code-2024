@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-input = STDIN.read.lines(chomp: true)
+STDIN.read.lines(chomp: true)
     .map{_1.split(" ").map(&:to_i)}
     .filter do |value|
         value == value.sort || value == value.sort.reverse
@@ -11,5 +11,5 @@ input = STDIN.read.lines(chomp: true)
         end
     end
     .length
+    .tap{p _1}
 
-p(input)

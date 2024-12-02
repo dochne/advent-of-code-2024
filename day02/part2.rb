@@ -7,7 +7,7 @@ def is_valid(value)
     end
 end
 
-input = STDIN.read.lines(chomp: true)
+STDIN.read.lines(chomp: true)
     .map{_1.split(" ").map(&:to_i)}
     .filter do |value|
         is_valid(value) || value.each_index.any? do |i|
@@ -15,5 +15,5 @@ input = STDIN.read.lines(chomp: true)
         end
     end
     .length
+    .tap{p _1}
 
-p(input)

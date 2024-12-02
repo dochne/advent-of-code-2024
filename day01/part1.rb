@@ -5,8 +5,8 @@ left, right = STDIN.read.lines(chomp: true)
   .transpose
   .map(&:sort)
 
-output = left.each_index
+left
+  .each_index
   .map {|i| [left[i], right[i]].max - [left[i], right[i]].min}
   .sum
-
-p(output)
+  .tap{p _1}

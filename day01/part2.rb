@@ -6,8 +6,7 @@ left, right = STDIN.read.lines(chomp: true)
 
 tally = right.tally  
 
-output = left
+left
   .map{|n| n * (tally[n] || 0)}
   .sum
-
-p(output)  
+  .tap{p _1}
