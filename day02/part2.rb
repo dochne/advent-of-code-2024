@@ -10,11 +10,7 @@ end
 input = STDIN.read.lines(chomp: true)
     .map{_1.split(" ").map(&:to_i)}
     .filter do |value|
-        if is_valid(value)
-            next true
-        end
-
-        value.each_with_index.any? do |_, i|
+        is_valid(value) || value.each_with_index.any? do |_, i|
             new_value = value.clone
             new_value.delete_at(i)
             is_valid(new_value) 
