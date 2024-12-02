@@ -11,9 +11,7 @@ input = STDIN.read.lines(chomp: true)
     .map{_1.split(" ").map(&:to_i)}
     .filter do |value|
         is_valid(value) || value.each_with_index.any? do |_, i|
-            new_value = value.clone
-            new_value.delete_at(i)
-            is_valid(new_value) 
+            is_valid(value.clone.tap{_1.delete_at(i)}) 
         end
     end
     .length
