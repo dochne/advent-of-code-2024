@@ -3,16 +3,11 @@
 input = STDIN.read.lines(chomp: true)
     .join("")
     .scan(/(mul|don't|do)(?:\((\d{1,3}),(\d{1,3})\))?/)
-    .reduce([0, 1]) do |acc, row|
+    .each_with_object([0, 1]) do |row, acc|
         case row[0]
-        when "do"
-            [acc[0], 1]
-        when "don't"
-            [acc[0], 0]
-        when "mul"
-            [acc[0] + (row[1].to_i * row[2].to_i * acc[1]), acc[1]]
+        when "do" then acc[1] = 1
+        when "don't" then acc[1] = 0
+        when "mul" then acc[0] += acc[1] * (row[1].to_i * row[2].to_i)
         end
     end
     .tap{p(_1[0])}
-
-
