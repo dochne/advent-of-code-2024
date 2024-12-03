@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-input = STDIN.read.lines(chomp: true)
+STDIN.read.lines(chomp: true)
     .join("")
     .split("mul")
     .reduce(0) do |acc, instruction|

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-input = STDIN.read.lines(chomp: true)
+STDIN.read.lines(chomp: true)
     .join("")
     .scan(/(mul|don't|do)(?:\((\d{1,3}),(\d{1,3})\))?/)
     .each_with_object([0, 1]) do |row, acc|
