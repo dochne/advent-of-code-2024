@@ -2,13 +2,7 @@
 
 STDIN.read.lines(chomp: true)
     .join("")
-    .split("mul")
-    .reduce(0) do |acc, instruction|
-        if matches = instruction.match(/^\((\d{1,3}),(\d{1,3})\)/)
-            acc += matches[1].to_i * matches[2].to_i
-        end
-        acc
-    end
+    .scan(/mul\((\d{1,3}),(\d{1,3})\)/)
+    .reduce(0) {|acc, row| acc + row.map(&:to_i).inject(:*)}
     .tap{p(_1)}
-
-
+    
