@@ -1,34 +1,27 @@
 #!/usr/bin/env ruby
 
 require 'matrix'
-vectors = []
-[-1, 0, 1].each do |x|
-    [-1, 0, 1].each do |y|
-        vectors << Vector[x, y]
+
+vectors = [
+    [Vector[-1, -1], Vector[1, 1]],
+    [Vector[1, -1], Vector[-1, 1]]
+]
+
+STDIN.read.lines(chomp: true)
+    .each_with_index
+    .reduce({}) do |acc, (row, row_idx)|
+        row.split("").each_with_index.reduce(acc) do |acc, (value, col_idx)|
+            acc[Vector[col_idx, row_idx]] = value
+            acc
+        end
     end
-end
-
-word = 'XMAS'.split("")
-
-grid = STDIN.read.lines(chomp: true)
-    .map{_1.split("")}
-
-grid
-    .each_index
-    .reduce(0) do |acc, row_idx|
-        # row.reduce(cell)
-        acc += grid[row_idx]
-            .each_index
-            .reduce(0) do |acc, col_idx|
-                pos = Vector[col_idx, row_idx]
-                new_bec = vectors.filter do |vector|
-                    word.each_with_index.all? do |letter, idx|
-                        pos + (vector * idx) == letter
-                    end
-                end
-                acc += new_bec.length
+    .yield_self do |grid|
+        grid.reduce(0) do |count, (cell)|
+            next count if grid[cell] != 'A'
+            count += 1 if vectors.all? do |(vector1, vector2)|
+                [grid[cell + vector1] || "|", grid[cell + vector2] || "|"].map(&:ord).sum == 160
             end
+            count
+        end
     end
     .tap{p _1}
-
-# p(grid)

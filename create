@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+
+# SESSION="53616c7465645f5f655b1d668bef595660b022bdd96904755d1c655b5f3f515b8ab44171754a5419f6017bbaf385cc2b2939551d12909b044785367624e8c22b"
+
+API_TOKEN = ENV['API_TOKEN']
+name = "day" + Time.now.strftime("%d")
+
+unless File.exist?(name) 
+    `cp -r template #{name}`
+end
+
+unless File.exist?(name + '/data.txt')
+    day = Time.now.strftime("%-d")
+    response = `curl --cookie "session=#{API_TOKEN}" https://adventofcode.com/2024/day/#{day}/input`
+    File.write(name + "/data.txt", response) 
+end
