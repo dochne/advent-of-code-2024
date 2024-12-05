@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-rules, update = STDIN.read.split("\n\n")
+STDIN.read.split("\n\n")
   .map{_1.lines(chomp: true)}
   .yield_self do |rules, updates|
     [rules.map{_1.split("|").map(&:to_i)}, updates.map{_1.split(",").map(&:to_i)}]
