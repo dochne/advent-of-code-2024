@@ -52,11 +52,10 @@ STDIN.read.lines(chomp: true)
     end
     .yield_self do |grid, path|
         path.reduce(0) do |acc, (pos, vector_idx)|
-            if grid[pos] == "."
-                grid[pos] = "#"
-                acc += will_loop?(grid, pos, vector_idx) ? 1 : 0
-                grid[pos] = "."
-            end
+            next acc if grid[pos] != "."
+            grid[pos] = "#"
+            acc += 1 if will_loop?(grid, pos, vector_idx)
+            grid[pos] = "."
             acc
         end
     end
