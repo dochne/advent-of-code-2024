@@ -21,7 +21,6 @@ def will_loop?(grid, pos, vector_idx)
     end
 end
 
-# This is potentially prettier, but slower :(
 STDIN.read.lines(chomp: true)
     .each_with_index
     .reduce(Hash.new) do |acc, (cell, row_idx)|
@@ -34,30 +33,24 @@ STDIN.read.lines(chomp: true)
         acc
     end
     .yield_self do |grid|
-        [grid, grid.find{|k, v| v == '^'}[0]]
-    end
-    .yield_self do |grid, starting_pos|
-        pos = starting_pos
-        path = Set.new
+        visited = 0
+        attempted = Set.new
+        loops = 0
+        pos = grid.find{|k, v| v == '^'}[0]
         vector_idx = 0
-        until grid[pos + VECTORS[vector_idx]].nil? do
-            if grid[pos + VECTORS[vector_idx]] == "#"
-                vector_idx = (vector_idx + 1) % 4
-            else
-                pos += VECTORS[vector_idx]
+        while true do
+            next_cell_idx = pos + VECTORS[vector_idx]
+            next_cell = grid[next_cell_idx]
+            break loops if next_cell.nil?
+            
+            if next_cell == "." && !attempted.include?(next_cell_idx)
+                attempted.add(next_cell_idx) # 1797
+                grid[next_cell_idx] = "#"
+                loops +=1 if will_loop?(grid, pos, vector_idx)
+                grid[next_cell_idx] = "."
             end
-            path.add(pos)
-        end
-        [grid, path, starting_pos]
-    end
-    .yield_self do |grid, path, starting_pos|
-        path.reduce(0) do |acc, cell|
-            if grid[cell] == "."
-                grid[cell] = "#"
-                acc += will_loop?(grid, starting_pos, 0) ? 1 : 0
-                grid[cell] = "."
-            end
-            acc
+            pos += VECTORS[vector_idx] if next_cell == "." || next_cell == "^"
+            vector_idx = (vector_idx + 1) % 4 if next_cell == "#"
         end
     end
     .tap{p(_1)}
