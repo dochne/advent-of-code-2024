@@ -24,7 +24,7 @@ STDIN.read.lines(chomp: true)
             grid.to_a.length
         )
     end
-    .yield_self do |state|
+    .tap do |state|
         state.anti_nodes = state.node_map.reduce(Set.new) do |acc, (cell, nodes)|
             nodes.combination(2).reduce(acc) do |acc, (a, b)|
                 freq = (a - b)
@@ -32,8 +32,6 @@ STDIN.read.lines(chomp: true)
                 acc += [].tap {|nodes| nodes << b while state.is_valid?(b -= freq)}
             end + nodes
         end
-        state
     end
     .yield_self { _1.anti_nodes.length }
     .tap{ p(_1) }
-
