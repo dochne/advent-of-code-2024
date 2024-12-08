@@ -10,16 +10,19 @@ end
 STDIN.read.lines(chomp: true)
     .each_with_index
     .yield_self do |grid|
-        nodes = grid.reduce(Hash.new{|h, k| h[k] = []}) do |acc, (cell, row_idx)|
-            cell.split("")
-                .each_with_index
-                .reduce(acc) do |acc, (value, col_idx)|
-                    acc[value] << Vector[col_idx, row_idx] if value != "."
-                    acc
-                end
-            acc
-        end
-        State.new(nodes, grid.first[0].length, grid.to_a.length)
+        State.new(
+            grid.reduce(Hash.new{|h, k| h[k] = []}) do |acc, (cell, row_idx)|
+                cell.split("")
+                    .each_with_index
+                    .reduce(acc) do |acc, (value, col_idx)|
+                        acc[value] << Vector[col_idx, row_idx] if value != "."
+                        acc
+                    end
+                acc
+            end,
+            grid.first[0].length,
+            grid.to_a.length
+        )
     end
     .yield_self do |state|
         state.anti_nodes = state.node_map.reduce(Set.new) do |acc, (cell, nodes)|
