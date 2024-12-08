@@ -13,12 +13,12 @@ if (ARGV[1] == "--test")
     exit
 end
 
-if !ARGV[1].nil? 
+if !ARGV[1].nil? && ARGV[1] != "--profile"
     data_file = ARGV[1].sub("--", "") + ".txt"
 end
 
 executable = ""
-if ARGV[2] == "--profile"
+if ARGV[1] == "--profile" || ARGV[2] == "--profile"
     # Hard coded! Eww!
     executable = "ruby /opt/homebrew/lib/ruby/gems/3.2.0/gems/ruby-prof-1.6.3/bin/ruby-prof"
 end
