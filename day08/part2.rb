@@ -22,10 +22,10 @@ STDIN.read.lines(chomp: true)
     end
     .tap do |state|
         state.anti_nodes = state.node_map.reduce(Set.new) do |acc, (cell, nodes)|
-            nodes.combination(2).reduce(acc) do |acc, (a, b)|
-                freq = (a - b)
-                acc += [].tap {|nodes| nodes << a while state.is_valid?(a += freq)}
-                acc += [].tap {|nodes| nodes << b while state.is_valid?(b -= freq)}
+            nodes.combination(2).each_with_object(acc) do |(a, b), acc|
+                freq = a - b
+                acc << a while state.is_valid?(a += freq)
+                acc << b while state.is_valid?(b -= freq)
             end + nodes
         end
     end
