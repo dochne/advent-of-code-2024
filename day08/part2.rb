@@ -11,14 +11,10 @@ STDIN.read.lines(chomp: true)
     .each_with_index
     .yield_self do |grid|
         State.new(
-            grid.reduce(Hash.new{|h, k| h[k] = []}) do |acc, (cell, row_idx)|
+            grid.each_with_object(Hash.new{|h, k| h[k] = []}) do |(cell, row_idx), acc|
                 cell.split("")
                     .each_with_index
-                    .reduce(acc) do |acc, (value, col_idx)|
-                        acc[value] << Vector[col_idx, row_idx] if value != "."
-                        acc
-                    end
-                acc
+                    .each_with_object(acc) {|(value, col_idx), acc| acc[value] << Vector[col_idx, row_idx] if value != "." }
             end,
             grid.first[0].length,
             grid.to_a.length
