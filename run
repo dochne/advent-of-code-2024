@@ -23,8 +23,24 @@ if ARGV[1] == "--profile" || ARGV[2] == "--profile"
     executable = "ruby /opt/homebrew/lib/ruby/gems/3.2.0/gems/ruby-prof-1.6.3/bin/ruby-prof"
 end
 
-print "Data: #{folder}/#{data_file}\n\n"
+data_filename = folder + "/" + data_file
+if !File.exist?(data_filename)
+    if data_file == "data.txt"
+        day = folder.match(/day(\d*)/)[1].to_i
 
-system("cat #{folder}/#{data_file} | #{executable} #{filename}")
+        require 'dotenv/load'
+        API_TOKEN = ENV['API_TOKEN']
+        response = `curl --cookie "session=#{API_TOKEN}" https://adventofcode.com/2024/day/#{day}/input`
+        File.write(data_filename, response) 
+    else
+        print "No such file exists\n" 
+        exit(1)    
+    end
+    
+end
+
+print "Data: #{data_filename}\n\n"
+
+system("cat #{data_filename} | #{executable} #{filename}")
 
 
