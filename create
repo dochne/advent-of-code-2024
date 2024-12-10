@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
-require 'dotenv/load'
+
+require 'dotenv/load' if ENV["API_TOKEN"].nil?
 
 API_TOKEN = ENV['API_TOKEN']
+
 name = "day" + Time.now.strftime("%d")
 
 unless File.exist?(name) 

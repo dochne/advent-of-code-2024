@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
 
-input = STDIN.read.lines(chomp: true)
-
-p(input)
+STDIN.read.lines(chomp: true)
+    .tap{p(_1)}
