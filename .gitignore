@@ -4,3 +4,4 @@ data.txt
 /.ignore
 /*/.artifacts
 /.env
+/day13/part2.rb
