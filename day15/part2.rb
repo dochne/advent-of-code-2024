@@ -1,12 +1,7 @@
 #!/usr/bin/env ruby
 require "matrix"
 
-INSTRUCTIONS = {
-    "<" => Vector[-1, 0],
-    ">" => Vector[1, 0],
-    "^" => Vector[0, -1],
-    "v" => Vector[0, 1]
-}
+INSTRUCTIONS = { "<" => Vector[-1, 0], ">" => Vector[1, 0], "^" => Vector[0, -1], "v" => Vector[0, 1]}
 
 Grid = Struct.new(:grid) {
     def initialize(lines)
@@ -49,10 +44,6 @@ Grid = Struct.new(:grid) {
 
     def find(value)
         self.grid.find {|index, v| v == value}.first
-    end
-
-    def display_value(col_idx, row_idx)
-        
     end
 
     def display
