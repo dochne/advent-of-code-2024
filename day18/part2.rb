@@ -72,8 +72,7 @@ class Grid
         start_node = Vector[0, 0]
         end_node = Vector[@width - 1, @height - 1]
 
-        distances = Hash.new(Float::INFINITY) 
-        previous_nodes = Hash.new(nil) 
+        distances = Hash.new(Float::INFINITY)
         queue = PriorityQueue.new
 
         empty_cells.each do |cell|
@@ -101,7 +100,6 @@ class Grid
             (0...width + 1).each do |col_idx|
                 value = @grid[Vector[col_idx, row_idx]] || "."
                 print value
-                # print value == "@" ? "\033[31m@\033[0m" : value
             end
             print "\n"
         end
