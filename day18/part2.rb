@@ -19,24 +19,6 @@ class PriorityQueue
       @queue.delete([prev_score, item])
       @queue.push([new_score, item])
     end
-  end
-
-
-def bisect(min, max, &block)
-    low = min
-    high = max
-
-    while low < high
-        mid = (low + high) / 2
-        unless block.call(mid).nil?
-            p("Attempting with #{mid} and succeeded")
-            low = mid + 1
-        else
-            p("Attempting with #{mid} and failed")
-            high = mid
-        end
-    end
-    low
 end
 
 class Grid
