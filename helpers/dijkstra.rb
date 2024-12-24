@@ -35,11 +35,30 @@ require_relative "./priority_queue.rb"
 
 DijkstraResult = Struct.new(:distance, :path)
 
+def dijkstra_dist_to_node(to_node, &neighbours)
+  queue = PriorityQueue.new
+  distance_from_start = Hash.new(Float::INFINITY)
+  parent_nodes = {}
+  distance_from_start[to_node] = 0
+  queue.push(to_node, 0)
+
+  while current = queue.pop
+      neighbours.call(current).each do |(neighbour, weight)|
+        new_distance = distance_from_start[current] + weight
+        if new_distance < distance_from_start[neighbour]
+          distance_from_start[neighbour] = new_distance
+          queue.move(neighbour, new_distance)
+        end
+      end
+  end
+  distance_from_start
+end
+
 # just saying paths from here
 def dijkstra(start_node, finish_nodes, &neighbours)
   queue = PriorityQueue.new
   distance_from_start = Hash.new(Float::INFINITY)
-  parent_node = {}
+  parent_nodes = {}
   distance_from_start[start_node] = 0
   queue.push(start_node, 0)
 
@@ -48,19 +67,35 @@ def dijkstra(start_node, finish_nodes, &neighbours)
         new_distance = distance_from_start[current] + weight
         if new_distance < distance_from_start[neighbour]
           distance_from_start[neighbour] = new_distance
-          parent_node[neighbour] = current
+          parent_nodes[neighbour] = current
           queue.move(neighbour, new_distance)
         end
       end
   end
 
   finish_nodes.each_with_object({}) do |node, acc|
-    acc[node] = distance_from_start[node]
+    acc[node] = DijkstraResult.new(distance_from_start[node], get_path(node, parent_nodes))
   end
 end
 
-# this is for all paths below
 def get_path(node, parent_nodes)
+  result = [node]
+
+  while parent_node = parent_nodes[node]
+    result << parent_node
+    node = parent_node
+  end
+  
+    
+  # result += get_path(parent_nodes[node], parent_nodes) unless parent_nodes[node].nil?
+  # parent_nodes[node].each do |parent_node|
+  #   result += get_path(parent_node, parent_nodes)
+  # end
+  result
+end
+
+# this is for all paths below
+def get_path_all(node, parent_nodes)
   result = [node]
   parent_nodes[node].each do |parent_node|
     result += get_path(parent_node, parent_nodes)
@@ -91,7 +126,7 @@ def dijkstra_all_paths(start_node, finish_nodes, &neighbours)
 
   finish_nodes.each_with_object({}) do |node, acc|
     # path here is actually "any node that we could have potentially travelled through in the optimal route"
-    acc[node] = DijkstraResult.new(distance_from_start[node], get_path(node, parent_nodes))
+    acc[node] = DijkstraResult.new(distance_from_start[node], get_path_all(node, parent_nodes))
     # while parent_nodes[current]
     
   end

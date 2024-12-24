@@ -41,6 +41,8 @@ end
 
 print "Data: #{data_filename}\n\n"
 
-system("cat #{data_filename} | #{executable} #{filename}")
+Dir.chdir(folder) do
+    system("cat #{data_file} | #{executable} ./#{file}")
+end
 
 
